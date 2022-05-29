@@ -1,11 +1,14 @@
+//The required modules.
 const http = require('http');
 const fs = require('fs')
 const url = require('url');
 const querystring = require('querystring');
 const figlet = require('figlet')
 
+//Create the server
 const server = http.createServer((req, res) => {
 
+//Function to reduce repetition if I add more webpages
   const readWrite = (file,contentType) => {
   fs.readFile(file, function(err, data) {
     res.writeHead(200, {'Content-Type': contentType});
@@ -17,12 +20,14 @@ const server = http.createServer((req, res) => {
   const page = url.parse(req.url).pathname;
   const params = querystring.parse(url.parse(req.url).query);
   console.log(page);
+
   if (page == '/') {
     readWrite("index.html","text/html")
   }
   else if (page == '/api') {
 
     let serverChoice = computerChoice()
+//Function to get the computers choice of rock paper scissors.
 
     function computerChoice(){
       let randomNumber = Math.random()
@@ -35,6 +40,7 @@ const server = http.createServer((req, res) => {
       }
     }
 
+//Puts the computer choice into a Json object
       res.writeHead(200, {'Content-Type': 'application/json'});
         const objToJson = {
           computerChoice: serverChoice
